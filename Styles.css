@@ -1,0 +1,147 @@
+/* Base Layout */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+    overflow: hidden;
+}
+
+/* 3D Scene Setup */
+.scene, .container {
+    /* transform-style: preserve-3d; */
+    position: relative;
+}
+
+.scene {
+    perspective: var(--scene-perspective);
+    padding: var(--scene-padding);
+}
+
+.box-wrapper {
+    position: relative;
+    /* transform-style: preserve-3d; */
+    perspective: 1000px;
+}
+
+.container {
+    display: flex;
+    gap: var(--scene-containerGap);
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    /* transform-style: preserve-3d; */
+}
+
+/* Floating Box */
+.floating-box {
+    width: var(--box-width);
+    height: var(--box-height);
+    background: var(--box-background);
+    border-radius: var(--box-borderRadius);
+    position: relative;
+    cursor: pointer;
+    /* transform-style: preserve-3d; */
+    transform-origin: center center;
+    will-change: transform;
+    transition: transform 0.3s ease-out;
+    backdrop-filter: blur(var(--box-blur)) saturate(var(--box-saturation));
+    box-shadow: 0 20px var(--box-shadowBlur) var(--box-shadowColor);
+    border: 1px solid var(--box-borderColor);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    z-index: 1;
+    overflow: hidden;  /* Add this line */
+}
+
+/* Box Effects */
+.floating-box::before,
+.floating-box::after {
+    content: '';
+    position: absolute;
+    border-radius: 30px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.floating-box::before {
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.floating-box::after {
+    inset: -1px;
+    border-radius: 31px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    z-index: -1;
+}
+
+.floating-box:hover::before,
+.floating-box:hover::after {
+    opacity: 0.1;
+}
+
+/* Glow Effect */
+.glow {
+    position: absolute;
+    inset: -50%;  /* Change from width/height 100% to inset -50% */
+    width: 200%;  /* Increase width to 200% */
+    height: 200%;  /* Increase height to 200% */
+    border-radius: inherit;
+    filter: blur(var(--box-glowBlur));
+    opacity: 0;
+    background: radial-gradient(
+        circle at var(--mouse-x) var(--mouse-y),
+        var(--box-glowColor),
+        transparent 60%
+    );
+    transition: opacity var(--box-transitionDuration) var(--box-transitionTiming),
+                background var(--box-transitionDuration) var(--box-transitionTiming);
+    pointer-events: none;
+}
+
+/* Simplified Bubble Animation */
+.bubble-container {
+    position: fixed;
+    inset: 0;
+    height: 150vh;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 1;
+    will-change: transform;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(0, 120vh);
+    }
+    100% {
+        transform: translate(var(--drift-x), -120%);
+    }
+}
+
+@keyframes sway {
+    0%, 100% {
+        margin-left: 0;
+    }
+    50% {
+        margin-left: var(--sway-amount);
+    }
+}
