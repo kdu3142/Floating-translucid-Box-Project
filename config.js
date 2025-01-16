@@ -23,7 +23,7 @@ export const CONFIG = {
 
     // Bubble configuration controls the background animation elements
     bubbles: {
-        count: 20,                                 // Number of bubbles to create
+        count: 30,                                 // Number of bubbles to create
         size: {
             base: 50,                              // Base size of bubbles (pixels)
             variance: 30                           // Random size variation added to base
