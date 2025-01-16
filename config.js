@@ -5,8 +5,8 @@ export const CONFIG = {
         height: '300px',                            // Height of each floating box
         borderRadius: '30px',                       // Corner rounding of the box
         rotationMax: 15,                           // Maximum rotation angle on hover (degrees)
-        hoverHeight: 60,                           // How far the box "lifts" on hover (pixels)
-        motionSpeed: 0.15,                         // Speed of box movement animations (0-1)
+        hoverHeight: 100,                           // How far the box "lifts" on hover (pixels)
+        motionSpeed: 0.25,                         // Speed of box movement animations (0-1)
         background: 'rgba(0, 0, 0, 0.2)',          // Box background color and opacity
         blur: '20px',                              // Backdrop blur effect intensity
         saturation: '180%',                        // Color saturation for backdrop filter
@@ -23,7 +23,7 @@ export const CONFIG = {
 
     // Bubble configuration controls the background animation elements
     bubbles: {
-        count: 30,                                 // Number of bubbles to create
+        count: 50,                                 // Number of bubbles to create
         size: {
             base: 50,                              // Base size of bubbles (pixels)
             variance: 30                           // Random size variation added to base
