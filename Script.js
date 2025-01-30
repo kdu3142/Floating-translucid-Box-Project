@@ -70,6 +70,7 @@ class FloatingBox {
         this.wrapper = element.parentElement;
         this.box = element;
         this.glow = element.querySelector('.glow');
+        this.boxConfig = CONFIG[this.box.id]; // Get specific box configuration
         this.state = {
             current: { rotateX: 0, rotateY: 0, translateZ: 0 },
             target: { rotateX: 0, rotateY: 0, translateZ: 0 }
@@ -98,9 +99,9 @@ class FloatingBox {
         const y = (e.clientY - rect.top) / rect.height * 2 - 1;
 
         this.state.target = {
-            rotateX: -y * CONFIG.box.rotationMax,
-            rotateY: x * CONFIG.box.rotationMax,
-            translateZ: CONFIG.box.hoverHeight
+            rotateX: -y * this.boxConfig.rotationMax,
+            rotateY: x * this.boxConfig.rotationMax,
+            translateZ: this.boxConfig.hoverHeight
         };
 
         this.updateGlowPosition(e, rect);
@@ -109,13 +110,13 @@ class FloatingBox {
     handleMouseEnter() {
         this.isHovered = true;
         this.box.style.transition = 'none';
-        this.glow.style.opacity = CONFIG.box.glowOpacity;
+        this.glow.style.opacity = this.boxConfig.glowOpacity;
     }
 
     handleMouseLeave() {
         this.isHovered = false;
         this.state.target = { rotateX: 0, rotateY: 0, translateZ: 0 };
-        this.box.style.transition = `transform ${CONFIG.box.transitionDuration} ${CONFIG.box.transitionTiming}`;
+        this.box.style.transition = `transform ${this.boxConfig.transitionDuration} ${this.boxConfig.transitionTiming}`;
         this.glow.style.opacity = '0';
     }
 
@@ -134,7 +135,7 @@ class FloatingBox {
 
     updateTransforms() {
         const { current, target } = this.state;
-        const speed = CONFIG.box.motionSpeed;
+        const speed = this.boxConfig.motionSpeed;
 
         ['rotateX', 'rotateY', 'translateZ'].forEach(prop => {
             current[prop] = AnimationManager.lerp(current[prop], target[prop], speed);
@@ -154,7 +155,7 @@ class FloatingBox {
 
     isNearRest() {
         return ['rotateX', 'rotateY', 'translateZ'].every(prop => 
-            Math.abs(this.state.current[prop]) < CONFIG.box.snapThreshold
+            Math.abs(this.state.current[prop]) < this.boxConfig.snapThreshold
         );
     }
 }

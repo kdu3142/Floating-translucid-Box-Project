@@ -1,24 +1,45 @@
 export const CONFIG = {
-    // Box configuration controls the appearance and behavior of the floating boxes
-    box: {
-        width: '300px',                              // Width of each floating box
-        height: '300px',                            // Height of each floating box
-        borderRadius: '30px',                       // Corner rounding of the box
-        rotationMax: 15,                           // Maximum rotation angle on hover (degrees)
-        hoverHeight: 100,                           // How far the box "lifts" on hover (pixels)
-        motionSpeed: 0.25,                         // Speed of box movement animations (0-1)
-        background: 'rgba(0, 0, 0, 0.2)',          // Box background color and opacity
-        blur: '20px',                              // Backdrop blur effect intensity
-        saturation: '180%',                        // Color saturation for backdrop filter
-        borderColor: 'rgba(255, 255, 255, 0.1)',   // Color of box border
-        glowOpacity: 0.2,                          // Maximum opacity of hover glow effect
-        glowBlur: '50px',                          // Blur radius of the glow effect
-        glowColor: 'rgba(255, 255, 255, 0.3)',     // Color of the hover glow effect
-        shadowBlur: '20px',                        // Box shadow blur radius
-        shadowColor: 'rgba(0, 0, 0, 0.3)',         // Box shadow color
-        transitionDuration: '0.5s',                // Duration of hover transitions
-        transitionTiming: 'ease-out',              // Timing function for transitions
-        snapThreshold: 0.01                        // Threshold for snapping to rest position
+    // Individual box configurations
+    box1: {
+        width: '300px',
+        height: '300px',
+        borderRadius: '30px',
+        rotationMax: 15,
+        hoverHeight: 100,
+        motionSpeed: 0.25,
+        background: 'rgba(0, 0, 0, 0.2)',
+        blur: '40px',
+        saturation: '180%',
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+        glowOpacity: 0.2,
+        glowBlur: '50px',
+        glowColor: 'rgba(255, 255, 255, 0.3)',
+        shadowBlur: '20px',
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        transitionDuration: '0.5s',
+        transitionTiming: 'ease-out',
+        snapThreshold: 0.01
+    },
+
+    box2: {
+        width: '300px',
+        height: '300px',
+        borderRadius: '30px',
+        rotationMax: 15,
+        hoverHeight: 100,
+        motionSpeed: 0.25,
+        background: 'rgba(0, 0, 0, 0.2)',
+        blur: '20px',
+        saturation: '180%',
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+        glowOpacity: 0.2,
+        glowBlur: '50px',
+        glowColor: 'rgba(255, 255, 255, 0.3)',
+        shadowBlur: '20px',
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        transitionDuration: '0.5s',
+        transitionTiming: 'ease-out',
+        snapThreshold: 0.01
     },
 
     // Bubble configuration controls the background animation elements

@@ -37,23 +37,47 @@ body {
 
 /* Floating Box */
 .floating-box {
-    width: var(--box-width);
-    height: var(--box-height);
-    background: var(--box-background);
-    border-radius: var(--box-borderRadius);
     position: relative;
     cursor: pointer;
-    /* transform-style: preserve-3d; */
+    transform-style: preserve-3d;
     transform-origin: center center;
     will-change: transform;
     transition: transform 0.3s ease-out;
-    backdrop-filter: blur(var(--box-blur)) saturate(var(--box-saturation));
-    box-shadow: 0 20px var(--box-shadowBlur) var(--box-shadowColor);
-    border: 1px solid var(--box-borderColor);
     transform: translateZ(0);
     backface-visibility: hidden;
     z-index: 1;
-    overflow: hidden;  /* Add this line */
+    overflow: hidden;
+}
+
+/* Floating Box Styles */
+#box1 {
+    width: var(--box1-width);
+    height: var(--box1-height);
+    border-radius: var(--box1-borderRadius);
+    background: var(--box1-background);
+    backdrop-filter: 
+        blur(var(--box1-blur))
+        saturate(var(--box1-saturation));
+    -webkit-backdrop-filter: 
+        blur(var(--box1-blur))
+        saturate(var(--box1-saturation));
+    box-shadow: 0 20px var(--box1-shadowBlur) var(--box1-shadowColor);
+    border: 1px solid var(--box1-borderColor);
+}
+
+#box2 {
+    width: var(--box2-width);
+    height: var(--box2-height);
+    border-radius: var(--box2-borderRadius);
+    background: var(--box2-background);
+    backdrop-filter: 
+        blur(var(--box2-blur))
+        saturate(var(--box2-saturation));
+    -webkit-backdrop-filter: 
+        blur(var(--box2-blur))
+        saturate(var(--box2-saturation));
+    box-shadow: 0 20px var(--box2-shadowBlur) var(--box2-shadowColor);
+    border: 1px solid var(--box2-borderColor);
 }
 
 /* Box Effects */

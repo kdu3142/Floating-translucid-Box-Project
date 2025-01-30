@@ -1,163 +1,209 @@
-# Interactive 3D Floating Box with Dynamic Background
-## Technical Documentation & Configuration Guide
+# Interactive 3D Floating Boxes with Dynamic Background
+## Technical Documentation & Implementation Guide
 
-## Overview
-This project implements an interactive 3D floating box system with dynamic background animations using vanilla JavaScript and CSS. The project features a modular architecture with separate configuration management, enhanced bubble animations, and improved glass morphism effects.
+## Project Architecture
 
-## Core Components
+### Core Components
+1. **Box System**
+   - Dual independent floating boxes with separate configurations
+   - Individual state management per box
+   - Box-specific hover and interaction handling
 
-### 1. Configuration Management
-- Centralized configuration system via `config.js`
-- Auto-generated CSS variables from configuration
-- Easily customizable visual and behavioral parameters
+2. **Animation System**
+   - Centralized animation management
+   - Linear interpolation (LERP) for smooth transitions
+   - Frame-based animation updates
 
-### 2. Floating Box System
-- Advanced 3D transformations with smooth interpolation
-- Enhanced glass morphism effects
-- Dynamic glow system with mouse tracking
-- Improved performance through transform optimizations
+3. **Background System**
+   - Dynamic bubble generation
+   - Multi-layer animations
+   - Gradient-based color management
 
-### 3. Background Animation System
-- Sophisticated bubble generation with gradients
-- Multiple animation patterns
-- Screen blend mode for vibrant overlaps
-- Optimized performance through efficient DOM management
+## Technical Implementation
 
-## Configuration System
+### Configuration System
+The project uses a modular configuration system with three main components:
 
-### Module Structure
 ```javascript
-config.js          // Central configuration
-└── CONFIG
-    ├── box       // Box appearance and behavior
-    ├── bubbles   // Background animation settings
-    └── scene     // Global 3D environment
-```
-
-### Key Configuration Objects
-
-#### Box Configuration
-```javascript
-box: {
-    width: '300px',
-    height: '300px',
-    rotationMax: 15,
-    hoverHeight: 100,
-    motionSpeed: 0.25,
-    // ...more properties
+CONFIG = {
+    box1: {...},     // First box configuration
+    box2: {...},     // Second box configuration
+    bubbles: {...},  // Background animation settings
+    scene: {...}     // Global environment settings
 }
 ```
 
-#### Bubble Configuration
+#### Box Configuration Properties
+Each box (box1/box2) has independent settings:
 ```javascript
-bubbles: {
-    count: 50,
-    size: {
-        base: 50,
-        variance: 30
-    },
-    animation: {
-        duration: {
-            base: 12,
-            variance: 4
-        }
+{
+    width: string,            // Box dimensions
+    height: string,
+    borderRadius: string,     // Visual properties
+    rotationMax: number,      // Maximum rotation angle (degrees)
+    hoverHeight: number,      // Z-axis lift on hover (pixels)
+    motionSpeed: number,      // Animation smoothing (0-1)
+    background: string,       // RGBA background color
+    blur: string,            // Backdrop filter blur
+    saturation: string,      // Backdrop filter saturation
+    borderColor: string,     // RGBA border color
+    glowOpacity: number,     // Hover glow intensity
+    glowBlur: string,        // Glow effect blur radius
+    glowColor: string,       // RGBA glow color
+    shadowBlur: string,      // Box shadow blur
+    shadowColor: string,     // RGBA shadow color
+    transitionDuration: string, // Animation timings
+    transitionTiming: string,
+    snapThreshold: number    // Position reset threshold
+}
+```
+
+### Class Structure
+
+#### FloatingBox Class
+```javascript
+class FloatingBox {
+    constructor(element) {
+        this.boxConfig = CONFIG[this.box.id];  // Box-specific config
+        this.state = {
+            current: { rotateX, rotateY, translateZ },
+            target: { rotateX, rotateY, translateZ }
+        };
     }
-    // ...colors and gradients
 }
 ```
 
-## Classes & Architecture
+Key Methods:
+- `handleMouseMove(e)`: Calculates rotation based on mouse position
+- `updateTransforms()`: Applies LERP-based smooth transitions
+- `isNearRest()`: Determines when to reset position
 
-### AnimationManager
-- Handles common animation utilities
-- Provides interpolation functions
-- Manages timing and smoothing
+#### AnimationManager Class
+Static utility class for animation calculations:
+```javascript
+class AnimationManager {
+    static lerp(start, end, factor)
+    static getRandomRange(min, max)
+}
+```
 
-### BubbleManager
-- Controls background animation system
-- Manages bubble lifecycle
-- Handles color and gradient distribution
+#### BubbleManager Class
+Handles background animation system:
+```javascript
+class BubbleManager {
+    createBubble() {
+        // Dynamic bubble generation with:
+        // - Random size variation
+        // - Random animation duration
+        // - Random drift and sway
+        // - Gradient/solid color selection
+    }
+}
+```
 
-### FloatingBox
-- Manages 3D transformations
-- Handles mouse interactions
-- Controls glow and hover effects
+### CSS Architecture
 
-## Visual Effects System
+#### Box Styling System
+- Individual box styles using CSS variables
+- Backdrop filter effects for glass morphism
+- 3D transform handling
+- Hover effect management
 
-### Enhanced Glass Morphism
-- Multiple layer compositing
-- Dynamic blur and saturation
-- Improved border highlights
+```css
+.floating-box {
+    transform-style: preserve-3d;
+    will-change: transform;
+    backface-visibility: hidden;
+}
 
-### Advanced Bubble System
-- Gradient-based bubbles
-- Screen blend mode overlaps
-- Randomized movement patterns
+#box1, #box2 {
+    /* Box-specific styles using CSS variables */
+}
+```
+
+#### Animation System
+```css
+@keyframes floatUp {
+    0% { transform: translate(0, 120vh); }
+    100% { transform: translate(var(--drift-x), -150%); }
+}
+
+@keyframes sway {
+    0%, 100% { margin-left: 0; }
+    50% { margin-left: var(--sway-amount); }
+}
+```
 
 ### Performance Optimizations
-- CSS variable-based animations
-- Transform batching
-- Efficient DOM updates
 
-## Usage & Implementation
+1. **Transform Optimizations**
+   - Use of `will-change: transform`
+   - Hardware acceleration via `transform: translateZ(0)`
+   - Backface visibility optimization
 
-### Basic Setup
-```html
-<div class="box-wrapper">
-    <div class="floating-box">
-        <div class="glow"></div>
-    </div>
-</div>
-```
+2. **Animation Performance**
+   - RequestAnimationFrame for smooth animations
+   - Efficient state management
+   - Optimized transform calculations
 
-### Initialization
+3. **Memory Management**
+   - Proper event listener cleanup
+   - Efficient DOM manipulation
+   - Controlled bubble count
+
+## Implementation Guide
+
+### Adding New Box Features
+1. Add configuration properties to `box1`/`box2` in `config.js`
+2. Update FloatingBox class to handle new properties
+3. Add corresponding CSS variables and styles
+
+### Modifying Animations
+1. Adjust timing in configuration:
 ```javascript
-import { CONFIG, generateCSSVariables } from './config.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    generateCSSVariables();
-    new BubbleManager();
-    // Initialize boxes
-});
+transitionDuration: '0.5s',
+transitionTiming: 'ease-out'
+```
+2. Modify LERP factor for smoothing:
+```javascript
+motionSpeed: 0.25  // Lower = smoother, higher = responsive
 ```
 
-## Customization
+### Customizing Visual Effects
+1. Adjust blur and saturation:
+```javascript
+blur: '40px',
+saturation: '180%'
+```
+2. Modify glow effect:
+```javascript
+glowOpacity: 0.2,
+glowBlur: '50px',
+glowColor: 'rgba(255, 255, 255, 0.3)'
+```
 
-### Modifying Appearance
-1. Update relevant properties in `CONFIG`
-2. Changes automatically propagate through CSS variables
-3. No need to modify CSS directly
-
-### Animation Adjustments
-- Modify timing in configuration
-- Adjust bubble patterns
-- Customize glow effects
-
-## Browser Support
+## Browser Compatibility
 
 ### Requirements
-- Modern CSS features (Custom Properties, 3D Transforms)
-- ES6+ JavaScript
-- RequestAnimationFrame API
+- Modern CSS support (CSS Variables, 3D Transforms)
+- ES6+ JavaScript support
+- Backdrop Filter support (or fallback)
 
-### Progressive Enhancement
-- Fallbacks for older browsers
-- Graceful degradation of effects
-- Basic functionality preserved
+### Performance Considerations
+- Monitor frame rates with heavy bubble counts
+- Adjust animation complexity based on device capability
+- Consider reducing effects on mobile devices
 
-## Performance Considerations
+## Debug Tips
+1. Monitor transform states via console.log in updateTransforms()
+2. Check box configuration loading with this.boxConfig
+3. Verify CSS variable generation in the root element
+4. Monitor bubble creation and animation performance
 
-### Optimizations
-- Transform-based animations
-- Efficient state management
-- Batched DOM operations
-- Memory leak prevention
+## Future Enhancements
+1. Touch device optimization
+2. Additional animation patterns
+3. Dynamic effect quality based on device performance
+4. More customization options per box
 
-### Best Practices
-- Limit bubble count based on device capability
-- Use appropriate animation durations
-- Monitor frame rates
-- Clean up unused elements
-
-This documentation reflects the current state of the project. For implementation details, refer to the source code and inline documentation.
+This documentation provides a technical foundation for understanding and extending the project's functionality.
