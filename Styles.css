@@ -84,10 +84,10 @@ body {
 
     /* Glass effect layers */
     background: var(--box1-background);
-    backdrop-filter: 
+    -webkit-backdrop-filter: 
         blur(var(--box1-blur))
         saturate(var(--box1-saturation));
-    -webkit-backdrop-filter: 
+    backdrop-filter: 
         blur(var(--box1-blur))
         saturate(var(--box1-saturation));
     
@@ -102,10 +102,10 @@ body {
     height: var(--box2-height);
     border-radius: var(--box2-borderRadius);
     background: var(--box2-background);
-    backdrop-filter: 
+    -webkit-backdrop-filter: 
         blur(var(--box2-blur))
         saturate(var(--box2-saturation));
-    -webkit-backdrop-filter: 
+    backdrop-filter: 
         blur(var(--box2-blur))
         saturate(var(--box2-saturation));
     box-shadow: 0 20px var(--box2-shadowBlur) var(--box2-shadowColor);
