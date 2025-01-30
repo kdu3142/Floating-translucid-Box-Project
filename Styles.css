@@ -1,4 +1,8 @@
-/* Base Layout */
+/**
+ * Base Layout
+ * Sets up the viewport and establishes the 3D space
+ * Background uses a subtle gradient for depth
+ */
 body {
     margin: 0;
     height: 100vh;
@@ -9,51 +13,76 @@ body {
     overflow: hidden;
 }
 
-/* 3D Scene Setup */
+/**
+ * 3D Scene Configuration
+ * Establishes the perspective hierarchy and container structure
+ * Each level preserves 3D space for nested elements
+ */
 .scene, .container {
-    /* transform-style: preserve-3d; */
+    /* transform-style is commented out at container level
+       to prevent perspective conflicts between boxes */
     position: relative;
 }
 
 .scene {
+    /* Uses CSS variables from config.js for consistent 3D space */
     perspective: var(--scene-perspective);
     padding: var(--scene-padding);
 }
 
+/**
+ * Box Container Structure
+ * Implements individual perspective for each box
+ * Prevents 3D transform interference between boxes
+ */
 .box-wrapper {
+    /* Separate perspective container for each box
+       Allows independent 3D transforms */
     position: relative;
-    /* transform-style: preserve-3d; */
     perspective: 1000px;
 }
 
 .container {
+    /* Flexbox layout for box positioning
+       Z-index ensures proper stacking with bubbles */
     display: flex;
     gap: var(--scene-containerGap);
     justify-content: center;
     align-items: center;
     z-index: 1;
-    /* transform-style: preserve-3d; */
 }
 
-/* Floating Box */
+/**
+ * Floating Box Core Styles
+ * Handles 3D transformations and hardware acceleration
+ * @see FloatingBox class in Script.js for dynamic transforms
+ */
 .floating-box {
     position: relative;
     cursor: pointer;
-    transform-style: preserve-3d;
-    transform-origin: center center;
-    will-change: transform;
+    /* Performance optimizations */
+    transform-style: preserve-3d;      /* Maintains 3D space for children */
+    transform-origin: center center;   /* Centered rotation point */
+    will-change: transform;           /* GPU acceleration hint */
     transition: transform 0.3s ease-out;
     transform: translateZ(0);
-    backface-visibility: hidden;
+    backface-visibility: hidden;      /* Prevents rendering artifacts */
     z-index: 1;
     overflow: hidden;
 }
 
-/* Floating Box Styles */
+/**
+ * Individual Box Styles
+ * Uses CSS variables generated from config.js
+ * Implements glass morphism effect with backdrop-filter
+ */
 #box1 {
+    /* Dimensions and shape */
     width: var(--box1-width);
     height: var(--box1-height);
     border-radius: var(--box1-borderRadius);
+
+    /* Glass effect layers */
     background: var(--box1-background);
     backdrop-filter: 
         blur(var(--box1-blur))
@@ -61,11 +90,14 @@ body {
     -webkit-backdrop-filter: 
         blur(var(--box1-blur))
         saturate(var(--box1-saturation));
+    
+    /* Depth effects */
     box-shadow: 0 20px var(--box1-shadowBlur) var(--box1-shadowColor);
     border: 1px solid var(--box1-borderColor);
 }
 
 #box2 {
+    /* Identical structure to box1 with different variables */
     width: var(--box2-width);
     height: var(--box2-height);
     border-radius: var(--box2-borderRadius);
@@ -80,7 +112,11 @@ body {
     border: 1px solid var(--box2-borderColor);
 }
 
-/* Box Effects */
+/**
+ * Box Hover Effects
+ * Creates layered gradient overlays for enhanced depth
+ * Activated on hover via opacity transitions
+ */
 .floating-box::before,
 .floating-box::after {
     content: '';
@@ -91,6 +127,7 @@ body {
 }
 
 .floating-box::before {
+    /* Inner highlight layer */
     inset: 0;
     background: linear-gradient(
         135deg,
@@ -101,6 +138,7 @@ body {
 }
 
 .floating-box::after {
+    /* Outer glow layer */
     inset: -1px;
     border-radius: 31px;
     background: linear-gradient(
@@ -113,11 +151,17 @@ body {
 
 .floating-box:hover::before,
 .floating-box:hover::after {
+    /* Hover state activation */
     opacity: 0.1;
 }
 
-/* Glow Effect */
+/**
+ * Dynamic Glow Effect
+ * Follows mouse position using CSS custom properties
+ * @see FloatingBox.updateGlowPosition() in Script.js
+ */
 .glow {
+    /* Expanded size for smooth edge transitions */
     position: absolute;
     inset: -50%;  /* Change from width/height 100% to inset -50% */
     width: 200%;  /* Increase width to 200% */
@@ -125,18 +169,27 @@ body {
     border-radius: inherit;
     filter: blur(var(--box-glowBlur));
     opacity: 0;
+    
+    /* Dynamic positioning based on mouse coordinates */
     background: radial-gradient(
         circle at var(--mouse-x) var(--mouse-y),
         var(--box-glowColor),
         transparent 60%
     );
+    
+    /* Smooth transitions for opacity and position */
     transition: opacity var(--box-transitionDuration) var(--box-transitionTiming),
                 background var(--box-transitionDuration) var(--box-transitionTiming);
     pointer-events: none;
 }
 
-/* Simplified Bubble Animation */
+/**
+ * Background Animation System
+ * Implements floating bubble effects
+ * @see BubbleManager class in Script.js
+ */
 .bubble-container {
+    /* Positioned behind boxes but covers full viewport */
     position: fixed;
     left: 0;
     right: 0;
@@ -151,13 +204,20 @@ body {
 }
 
 .bubble {
+    /* Individual bubble styling */
     position: absolute;
     border-radius: 50%;
     opacity: 1;
     will-change: transform;
 }
 
+/**
+ * Animation Keyframes
+ * Defines motion patterns for bubbles
+ * Uses CSS custom properties for dynamic movement
+ */
 @keyframes floatUp {
+    /* Vertical movement with horizontal drift */
     0% {
         transform: translate(0, 120vh);
     }
@@ -167,6 +227,7 @@ body {
 }
 
 @keyframes sway {
+    /* Horizontal oscillation effect */
     0%, 100% {
         margin-left: 0;
     }
