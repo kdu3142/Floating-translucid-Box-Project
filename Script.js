@@ -139,6 +139,10 @@ class FloatingBox {
         this.box = element;
         this.glow = element.querySelector('.glow');
         this.boxConfig = CONFIG[this.box.id]; // Get specific box configuration
+        
+        // Add debug logging
+        console.log('Box Config:', this.box.id, this.boxConfig);
+        
         this.state = {
             current: { rotateX: 0, rotateY: 0, translateZ: 0 },
             target: { rotateX: 0, rotateY: 0, translateZ: 0 }
@@ -320,17 +324,20 @@ class FloatingBox {
  * @see generateCSSVariables in config.js
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // Generate CSS variables first
+    console.log('Initializing...');
     generateCSSVariables();
     
-    // Wait a small delay to ensure CSS variables are applied
-    setTimeout(() => {
-        // Initialize background effects
-        new BubbleManager();
-        
-        // Initialize boxes
-        document.querySelectorAll('.floating-box').forEach(box => {
-            new FloatingBox(box);
-        });
-    }, 100);
+    // Debug: Check if CSS variables were set
+    const styles = getComputedStyle(document.documentElement);
+    console.log('CSS Variables:', {
+        width: styles.getPropertyValue('--box1-width'),
+        blur: styles.getPropertyValue('--box1-blur'),
+        glowColor: styles.getPropertyValue('--box1-glowColor')
+    });
+    
+    // Initialize immediately instead of setTimeout
+    const bubbleManager = new BubbleManager();
+    document.querySelectorAll('.floating-box').forEach(box => {
+        new FloatingBox(box);
+    });
 });

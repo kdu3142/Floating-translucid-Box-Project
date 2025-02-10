@@ -78,22 +78,22 @@ body {
  */
 #box1 {
     /* Dimensions and shape */
-    width: var(--box1-width);
-    height: var(--box1-height);
-    border-radius: var(--box1-borderRadius);
+    width: var(--box1-width, 300px);
+    height: var(--box1-height, 300px);
+    border-radius: var(--box1-borderRadius, 30px);
 
     /* Glass effect layers */
-    background: var(--box1-background);
+    background: var(--box1-background, rgba(0, 0, 0, 0.2));
     -webkit-backdrop-filter: 
-        blur(var(--box1-blur))
-        saturate(var(--box1-saturation));
+        blur(var(--box1-blur, 40px))
+        saturate(var(--box1-saturation, 180%));
     backdrop-filter: 
-        blur(var(--box1-blur))
-        saturate(var(--box1-saturation));
+        blur(var(--box1-blur, 40px))
+        saturate(var(--box1-saturation, 180%));
     
     /* Depth effects */
-    box-shadow: 0 20px var(--box1-shadowBlur) var(--box1-shadowColor);
-    border: 1px solid var(--box1-borderColor);
+    box-shadow: 0 20px var(--box1-shadowBlur, 20px) var(--box1-shadowColor, rgba(0, 0, 0, 0.3));
+    border: 1px solid var(--box1-borderColor, rgba(255, 255, 255, 0.1));
 }
 
 #box2 {
@@ -167,13 +167,13 @@ body {
     width: 200%;  /* Increase width to 200% */
     height: 200%;  /* Increase height to 200% */
     border-radius: inherit;
-    filter: blur(var(--box-glowBlur));
+    filter: blur(var(--box1-glowBlur, 50px));  /* Added fallback */
     opacity: 0;
     
     /* Dynamic positioning based on mouse coordinates */
     background: radial-gradient(
-        circle at var(--mouse-x) var(--mouse-y),
-        var(--box-glowColor),
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        var(--box1-glowColor, rgba(255, 255, 255, 0.3)),
         transparent 60%
     );
     

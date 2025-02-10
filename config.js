@@ -153,24 +153,20 @@ export const CONFIG = {
 export function generateCSSVariables() {
     const root = document.documentElement;
     
-    const setVar = (prefix, obj) => {
-        for (const [key, value] of Object.entries(obj)) {
-            const cssKey = prefix ? `${prefix}-${key}` : key;
-            if (value && typeof value === 'object' && !Array.isArray(value)) {
-                setVar(cssKey, value);
-            } else {
-                root.style.setProperty(`--${cssKey}`, value);
-            }
-        }
-    };
+    // Direct application for box1
+    Object.entries(CONFIG.box1).forEach(([key, value]) => {
+        root.style.setProperty(`--box1-${key}`, value);
+    });
     
-    // Apply scene variables
-    setVar('scene', CONFIG.scene);
+    // Direct application for box2
+    Object.entries(CONFIG.box2).forEach(([key, value]) => {
+        root.style.setProperty(`--box2-${key}`, value);
+    });
     
-    // Apply box-specific variables
-    setVar('box1', CONFIG.box1);
-    setVar('box2', CONFIG.box2);
+    // Scene variables
+    Object.entries(CONFIG.scene).forEach(([key, value]) => {
+        root.style.setProperty(`--scene-${key}`, value);
+    });
     
-    // Apply bubble variables
-    setVar('bubbles', CONFIG.bubbles);
+    console.log('CSS variables generated');
 }
