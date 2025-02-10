@@ -144,6 +144,8 @@ class FloatingBox {
             target: { rotateX: 0, rotateY: 0, translateZ: 0 }
         };
         this.isHovered = false;
+        this.isTouchDevice = 'ontouchstart' in window;
+        this.isTouch = false;
         this.boundUpdateFrame = this.updateFrame.bind(this);
         this.initialize();
     }
@@ -154,6 +156,9 @@ class FloatingBox {
      */
     initialize() {
         this.setupEventListeners();
+        if (this.isTouchDevice) {
+            this.setupTouchListeners();
+        }
         requestAnimationFrame(this.boundUpdateFrame);
     }
 
@@ -162,9 +167,50 @@ class FloatingBox {
      * Handles hover states and 3D transformations
      */
     setupEventListeners() {
-        this.box.addEventListener('mousemove', this.handleMouseMove.bind(this));
-        this.box.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
-        this.box.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+        if (!this.isTouchDevice) {
+            this.box.addEventListener('mousemove', this.handleMouseMove.bind(this));
+            this.box.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
+            this.box.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+        }
+    }
+
+    setupTouchListeners() {
+        this.box.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        this.box.addEventListener('touchmove', this.handleTouchMove.bind(this));
+        this.box.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(e) {
+        e.preventDefault();
+        this.isTouch = true;
+        this.isHovered = true;
+        this.box.style.transition = 'none';
+        this.glow.style.opacity = this.boxConfig.glowOpacity;
+        this.handleTouchMove(e);
+    }
+
+    handleTouchMove(e) {
+        e.preventDefault();
+        if (!this.isTouch) return;
+
+        const touch = e.touches[0];
+        const rect = this.box.getBoundingClientRect();
+        const x = (touch.clientX - rect.left) / rect.width * 2 - 1;
+        const y = (touch.clientY - rect.top) / rect.height * 2 - 1;
+
+        this.state.target = {
+            rotateX: -y * this.boxConfig.rotationMax,
+            rotateY: x * this.boxConfig.rotationMax,
+            translateZ: this.boxConfig.hoverHeight
+        };
+
+        this.updateGlowPosition({ clientX: touch.clientX, clientY: touch.clientY }, rect);
+    }
+
+    handleTouchEnd(e) {
+        e.preventDefault();
+        this.isTouch = false;
+        this.handleMouseLeave();
     }
 
     /**
