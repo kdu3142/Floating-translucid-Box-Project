@@ -320,11 +320,17 @@ class FloatingBox {
  * @see generateCSSVariables in config.js
  */
 document.addEventListener('DOMContentLoaded', () => {
+    // Generate CSS variables first
     generateCSSVariables();
-    new BubbleManager();
     
-    // Initialize each box separately
-    document.querySelectorAll('.floating-box').forEach(box => {
-        new FloatingBox(box);
-    });
+    // Wait a small delay to ensure CSS variables are applied
+    setTimeout(() => {
+        // Initialize background effects
+        new BubbleManager();
+        
+        // Initialize boxes
+        document.querySelectorAll('.floating-box').forEach(box => {
+            new FloatingBox(box);
+        });
+    }, 100);
 });

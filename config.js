@@ -153,20 +153,24 @@ export const CONFIG = {
 export function generateCSSVariables() {
     const root = document.documentElement;
     
-    /**
-     * Recursive function to process nested configuration objects
-     * @param {string} prefix - CSS variable name prefix
-     * @param {Object} obj - Configuration object or sub-object
-     */
     const setVar = (prefix, obj) => {
         for (const [key, value] of Object.entries(obj)) {
-            if (typeof value === 'object') {
-                setVar(`${prefix}${key}-`, value);
+            const cssKey = prefix ? `${prefix}-${key}` : key;
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                setVar(cssKey, value);
             } else {
-                root.style.setProperty(`--${prefix}${key}`, value);
+                root.style.setProperty(`--${cssKey}`, value);
             }
         }
     };
     
-    setVar('', CONFIG);
+    // Apply scene variables
+    setVar('scene', CONFIG.scene);
+    
+    // Apply box-specific variables
+    setVar('box1', CONFIG.box1);
+    setVar('box2', CONFIG.box2);
+    
+    // Apply bubble variables
+    setVar('bubbles', CONFIG.bubbles);
 }
